@@ -165,7 +165,7 @@ class ModuleRequest(PluginModuleBase):
             item.remote_path = ret['remote_path']
             item.save()
 
-            lsf_data = SupportRclone.lsf(ret['remote_path'])
+            lsf_data = SupportRclone.lsjson(ret['remote_path'])
             if lsf_data != None and len(lsf_data) == 1 and 'Failed' in lsf_data[0]:
                 item.status = "fail_remote_path_is_wrong"
                 item.save()
