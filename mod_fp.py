@@ -1,3 +1,5 @@
+from flask import abort
+
 from support import SupportDiscord
 
 from .setup import *
@@ -59,6 +61,11 @@ class ModuleFP(PluginModuleBase):
         #P.logger.error(d(req.form))
         try:
             if sub == 'scan_completed':
+                # 요청이 POST로 들어 옴
+                if F.SystemModelSetting.get_bool('use_apikey'):
+                    apikey = request.args.to_dict().get('apikey')
+                    if apikey != F.SystemModelSetting.get('apikey'):
+                        abort(403)
                 callback_id = req.form['callback_id']
                 db_item = ModelFPItem.get_by_id(callback_id.split('_')[-1])
                 db_item.status = req.form['status']

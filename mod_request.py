@@ -58,6 +58,7 @@ class ModuleRequest(PluginModuleBase):
         return jsonify(ret)
 
 
+    @check_api
     def process_normal(self, sub, req):
         try:
             if sub == 'copy_completed':
