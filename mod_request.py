@@ -58,32 +58,6 @@ class ModuleRequest(PluginModuleBase):
         return jsonify(ret)
 
 
-    @check_api
-    def process_normal(self, sub, req):
-        try:
-            if sub == 'copy_completed':
-                clone_folder_id = req.form['clone_folder_id']
-                client_db_id = req.form['client_db_id']
-                logger.debug(f'copy_complted: {client_db_id}, {clone_folder_id}')
-                self.do_download(client_db_id, clone_folder_id)
-                ret = {'ret':'success'}
-                return jsonify(ret)
-            elif sub == 'callback':
-                about = req.form['about']
-                client_db_id = req.form['client_db_id']
-                ret = req.form['ret']
-                logger.debug('about : %s, client_db_id : %s, ret : %s', about, client_db_id, ret)
-                if about == 'request':
-                    item = ModelRequestItem.get_by_id(client_db_id)
-                    item.status = req.form['ret']
-                    item.save()
-                ret = {'ret':'success'}
-                return jsonify(ret)
-        except Exception as e: 
-            logger.error(f"Exception:{str(e)}")
-            logger.error(traceback.format_exc())
-
-
     def process_api(self, sub, req):
         try:
             if sub == 'add_copy_2024':

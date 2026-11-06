@@ -62,7 +62,6 @@
 
 </style>
 
-<script src="{{ url_for('.static', filename='utils.js') }}"></script>
 <script type="text/javascript">
 var last_list_option = "{{arg['request_item_last_list_option']}}";
 
@@ -90,7 +89,7 @@ function make_list(data) {
     tmp = '<input type="checkbox"  id="check|'+data[i].id+'" data-id="'+data[i].id+'">';
     tmp += '<label>&nbsp;' +data[i].id + '</label>';
     str += j_col(1, tmp);
-    tmp = (data[i].status == 'completed') ? text_color('완료','blue') : gdsToolEscapeHtml(data[i].status);
+    tmp = (data[i].status == 'completed') ? text_color('완료','blue') : data[i].status;
     tmp = '상태 : ' + tmp;
     tmp += '<br>크기 : ' + humanFileSize(data[i].size);
     tmp += '<br>파일 : ' + data[i].count;
@@ -114,7 +113,7 @@ function make_list(data) {
 
     sub += j_row_start();
     tmp = '';
-    tmp2 = j_button('gdsToolJsonBtn', 'JSON', {'idx':i});
+    tmp2 = j_button('globalJsonBtn', 'JSON', {'idx':i});
     tmp2 += j_button('recopy_btn', '재요청', {'id':data[i].id});
     tmp2 += j_button('globalDbDeleteItemBtn', '삭제', {'id':data[i].id}, 'danger');
     tmp += j_button_group(tmp2);
@@ -181,9 +180,9 @@ $("body").on('change', '#option2', function(e){
   globalRequestSearch(1);
 });
 
-$("body").on('click', '#gdsToolJsonBtn', function(e){
+$("body").on('click', '#json_btn', function(e){
   e.preventDefault();
-  gdsToolShowJsonModal(current_data.list[$(this).data('idx')]);
+  showModal(current_data.list[$(this).data('idx')]);
 });
 
 $("body").on('click', '#db_delete_btn', function(e){
